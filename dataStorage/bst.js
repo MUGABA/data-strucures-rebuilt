@@ -4,9 +4,11 @@ function Node(value) {
   this.right = null;
 }
 
-function Bst() {
-  this.root = null;
-  this.insertIterative = (val) => {
+class Bst {
+  constructor() {
+    this.root = null;
+  }
+  insertIterative = (val) => {
     let node = new Node(val);
     if (this.root === null) {
       this.root = node;
@@ -30,7 +32,7 @@ function Bst() {
       }
     }
   };
-  this.insertRecursive = (val) => {
+  insertRecursive = (val) => {
     let node = new Node(val);
     if (!this.root) {
       this.root = node;
@@ -55,7 +57,7 @@ function Bst() {
     }
     helper(current1, val);
   };
-  this.findIterative = (val) => {
+  findIterative = (val) => {
     if (this.root === null) return false;
     let current = this.root;
     if (current.value === val) return true;
@@ -70,7 +72,7 @@ function Bst() {
       }
     }
   };
-  this.findRecursive = (val) => {
+  findRecursive = (val) => {
     if (this.root === null) return false;
     let node = this.root;
 
@@ -86,6 +88,56 @@ function Bst() {
     }
     lookUp(node, val);
   };
+  breadthFirstSearch_bfs() {
+    if (!this.root) return [];
+    let queue = [this.root],
+      result = [],
+      node;
+    while (queue.length) {
+      node = queue.shift();
+      result.push(node.value);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    return result;
+  }
+  dfsPreOrder() {
+    if (!this.root) return [];
+    let current = this.root,
+      result = [];
+    function traversePre(node) {
+      result.push(node.value);
+      if (node.left) traversePre(node.left);
+      if (node.right) traversePre(node.right);
+    }
+    traversePre(current);
+    return result;
+  }
+  dfsPostOrder() {
+    if (!this.root) return [];
+    let result = [],
+      current = this.root;
+    function traversePost(node) {
+      if (node.left) traversePost(node.left);
+      if (node.right) traversePost(node.right);
+      result.push(node.value);
+    }
+    traversePost(current);
+    return result;
+  }
+  dfsInOrder() {
+    if (!this.root) return [];
+    let result = [],
+      current = this.root;
+
+    function traverseIn(node) {
+      if (node.left) traverseIn(node.left);
+      result.push(node.value);
+      if (node.right) traverseIn(node.right);
+    }
+    traverseIn(current);
+    return result;
+  }
 }
 
 let bst = new Bst();
@@ -102,4 +154,7 @@ bst.findIterative(70);
 bst.insertRecursive(15);
 bst.findIterative(100);
 bst.findRecursive(65);
-console.log(bst);
+bst.breadthFirstSearch_bfs();
+bst.dfsPreOrder();
+bst.dfsPostOrder();
+bst.dfsInOrder();
